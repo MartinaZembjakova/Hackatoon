@@ -1,0 +1,5 @@
+# folder with virtual environment
+venv/*
+
+# pycharm project files
+.idea/*
