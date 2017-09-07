@@ -1,14 +1,21 @@
 """
 This file contains the necessary functions and handlers for message formatting.
 """
+from settings import JIRA_URL
 
-def Bug (issue, name):
-    return "(bug) " + issue + " - " + name + "\n" + "https://jira.solarwinds.com/browse/" + issue
+BROWSE_URL = JIRA_URL + '/browse/'
 
-def Closed (issue, name):
-    return "(movie) " + issue + " - " + name + "\n" + "https://jira.solarwinds.com/browse/" + issue
 
-if __name__=="__main__":
-    print("Start formatting")
-    print(Bug("Issue", "Name"))
-    print("STOOOOOP")
+def bug(case, summary):
+    return "(bug) " + case + " - " + summary + "\n" + BROWSE_URL + case
+
+
+def closed(case, summary):
+    return "(movie) " + case + " - " + summary + "\n" + BROWSE_URL + case
+
+
+def format_message(case, summary, issue_type, status):
+    if status == 'Open':
+        return bug(case, summary)
+    else:
+        return closed(case, summary)
