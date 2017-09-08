@@ -15,7 +15,7 @@ def closed(case, summary):
 
 
 def other_types(case, summary):
-    return case + " - " + summary + "\n" + BROWSE_URL + case
+    return "(computerrage) " + case + " - " + summary + "\n" + BROWSE_URL + case
 
 
 def format_message(case, summary, issue_type, status):
