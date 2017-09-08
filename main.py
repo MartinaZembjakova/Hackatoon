@@ -14,7 +14,7 @@ def main():
     # initialise sessions and establish connections
     skype = login(SKYPE_USERNAME, SKYPE_PASSWORD)
     skype_chat = open_chat(skype, CHAT_INVITE_URL)
-    last_check = datetime.now() - timedelta(1)
+    last_check = datetime.now() - timedelta(hours=4)
     session = initialise_session()
 
     # stopping flag

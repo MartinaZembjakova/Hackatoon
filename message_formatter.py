@@ -19,9 +19,9 @@ def other_types(case, summary):
 
 
 def format_message(case, summary, issue_type, status):
-    if status == 'Open' and issue_type == "Bug":
-        return bug(case, summary)
-    elif status == 'Open':
-        return other_types(case, summary)
-    else:
+    if status == 'Closed':
         return closed(case, summary)
+    elif issue_type == "Bug":
+        return bug(case, summary)
+    else:
+        return other_types(case, summary)
