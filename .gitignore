@@ -4,4 +4,8 @@ venv/*
 # pycharm project files
 .idea/*
 
+# python cache
 __pycache__/*
+
+#log file
+jira2skype.log

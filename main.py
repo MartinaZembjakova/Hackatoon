@@ -13,6 +13,7 @@ from skype_service import send_message, open_chat, login
 
 
 def main():
+    logging.basicConfig(filename='jira2skype.log', format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
     logging.info("Initialising sessions and connections.")
     skype = login(SKYPE_USERNAME, SKYPE_PASSWORD)
     skype_chat = open_chat(skype, CHAT_INVITE_URL)
