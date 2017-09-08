@@ -44,19 +44,19 @@ def parse_issue(issue):
     return case, summary, issue_type, status
 
 
-def list_new_issues(session, last_check, project_name, issue_type, max_results):
+def list_new_issues(session, last_check, project_name, issue_types, max_results):
     """
     Retrieves list of issues present in the JIRA for the given project.
     :param session: http session
     :param last_check: date of the last check for new issues
     :param project_name: string with product name
-    :param issue_type: string with issue type
+    :param issue_types: string with issue type
     :param max_results: maximal number of issues returned by the query
     :return: list of json encoded issues
     """
     last_check_formated = last_check.strftime("%Y-%m-%d %H:%M")
     query = 'Project = "{product_name}" AND '.format(product_name=project_name) + \
-            'type = "{issue_type}" AND '.format(issue_type=issue_type) + \
+            'type IN {issue_type} AND '.format(issue_type=issue_types) + \
             '((created >= "{last_check}") '.format(last_check=last_check_formated) + \
             'OR ' + \
             '(updated >= "{last_check}" '.format(last_check=last_check_formated) + \

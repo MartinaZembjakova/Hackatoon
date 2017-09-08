@@ -15,7 +15,7 @@ JIRA_URL = os.environ.get("JIRA_URL")
 MAX_RESULTS = os.environ.get("MAX_RESULTS", 50)
 PROJECT_NAME = os.environ.get("PROJECT_NAME", "Log & Event Manager")
 JIRA_SSL_CERTIFICATE = os.environ.get("JIRA_SSL_CERTIFICATE", False)
-ISSUE_TYPE = os.environ.get("ISSUE_TYPE", "Bug")
+ISSUE_TYPES = os.environ.get("ISSUE_TYPES", ("Bug", "Story"))
 
 # Others settings
 TIMEOUT = os.environ.get("TIMEOUT", 300)
