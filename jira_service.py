@@ -1,7 +1,7 @@
 """
 This file contains all the necessary functions and handlers for JIRA integration.
 """
-import sys
+import logging
 
 import requests
 
@@ -17,12 +17,11 @@ def initialise_session(certificate, username, password):
     :return: newly created session
     """
     session = requests.Session()
-    # FIXME: handle correctly SSL certificates
     session.verify = certificate
     credentials = {"username": username, "password": password}
     response = session.post(LOGIN_URL, json=credentials)
     if not response:
-        print(response.content, file=sys.stderr)
+        logging.error("Unable to to log into JIRA, see the response for more info. %s", response.content)
         raise RuntimeError("Unable to log into JIRA.")
     return session
 
@@ -62,5 +61,6 @@ def list_new_issues(session, last_check, project_name, issue_types, max_results)
             '(updated >= "{last_check}" '.format(last_check=last_check_formated) + \
             'AND status = "Closed"))'
     parameters = {'jql': query, 'maxResults': max_results}
+    logging.debug("Looking for new issues with query %s.", query)
     response = session.get(SEARCH_URL, params=parameters)
     return response.json()['issues']

@@ -2,6 +2,7 @@
 This file contains main function for running the application itself.
 """
 from datetime import datetime, timedelta
+import logging
 import threading
 
 from message_formatter import format_message
@@ -12,7 +13,7 @@ from skype_service import send_message, open_chat, login
 
 
 def main():
-    # initialise sessions and establish connections
+    logging.info("Initialising sessions and connections.")
     skype = login(SKYPE_USERNAME, SKYPE_PASSWORD)
     skype_chat = open_chat(skype, CHAT_INVITE_URL)
     last_check = datetime.now() - timedelta(hours=4)
@@ -22,11 +23,13 @@ def main():
     stop_event = threading.Event()
     # worker thread
     checking_thread = threading.Thread(target=repeat_checks, args=(last_check, session, skype_chat, stop_event))
+    logging.info("Starting worker thread.")
     checking_thread.start()
     # wait for user input in main thread
     user_input()
 
     # at this point user typed in bye and wants to exit
+    logging.info("Shutting down worker thread.")
     stop_event.set()
     checking_thread.join()
 
@@ -57,10 +60,13 @@ def do_check(last_check, session, skype_chat):
     :param skype_chat: chat to which the messages will be sent
     :return: None
     """
+    logging.info("Checking for new issues.")
     issues = list_new_issues(session, last_check, PROJECT_NAME, ISSUE_TYPES, MAX_RESULTS)
+    logging.debug("Got %i new issues.", len(issues))
     for issue in issues:
         case, summary, issue_type, status = parse_issue(issue)
         message = format_message(case, summary, issue_type, status)
+        logging.debug("Sending message %s to Skype chat.", message)
         send_message(skype_chat, message)
 
 
