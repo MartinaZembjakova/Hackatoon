@@ -8,12 +8,12 @@ import threading
 from message_formatter import format_message
 from jira_service import initialise_session, list_new_issues, close_session, parse_issue
 from settings import SKYPE_USERNAME, SKYPE_PASSWORD, CHAT_INVITE_URL, PROJECT_NAME, TIMEOUT, ISSUE_TYPES, \
-    JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD, MAX_RESULTS
+    JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD, MAX_RESULTS, LOG_FILE
 from skype_service import send_message, open_chat, login
 
 
 def main():
-    logging.basicConfig(filename='jira2skype.log', format='%(asctime)s %(levelname)s: %(message)s', level=logging.DEBUG)
+    logging.basicConfig(filename=LOG_FILE, format='%(asctime)s %(levelname)s: %(message)s', level=logging.DEBUG)
     logging.info("Initialising sessions and connections.")
     skype = login(SKYPE_USERNAME, SKYPE_PASSWORD)
     skype_chat = open_chat(skype, CHAT_INVITE_URL)
