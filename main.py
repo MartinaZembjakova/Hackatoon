@@ -6,7 +6,8 @@ import threading
 
 from message_formatter import format_message
 from jira_service import initialise_session, list_new_issues, close_session, parse_issue
-from settings import SKYPE_USERNAME, SKYPE_PASSWORD, CHAT_INVITE_URL, PROJECT_NAME, TIMEOUT, ISSUE_TYPE
+from settings import SKYPE_USERNAME, SKYPE_PASSWORD, CHAT_INVITE_URL, PROJECT_NAME, TIMEOUT, ISSUE_TYPE, \
+    JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD, MAX_RESULTS
 from skype_service import send_message, open_chat, login
 
 
@@ -15,7 +16,7 @@ def main():
     skype = login(SKYPE_USERNAME, SKYPE_PASSWORD)
     skype_chat = open_chat(skype, CHAT_INVITE_URL)
     last_check = datetime.now() - timedelta(hours=4)
-    session = initialise_session()
+    session = initialise_session(JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD)
 
     # stopping flag
     stop_event = threading.Event()
@@ -56,7 +57,7 @@ def do_check(last_check, session, skype_chat):
     :param skype_chat: chat to which the messages will be sent
     :return: None
     """
-    issues = list_new_issues(session, last_check, PROJECT_NAME, ISSUE_TYPE)
+    issues = list_new_issues(session, last_check, PROJECT_NAME, ISSUE_TYPE, MAX_RESULTS)
     for issue in issues:
         case, summary, issue_type, status = parse_issue(issue)
         message = format_message(case, summary, issue_type, status)
