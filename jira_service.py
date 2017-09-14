@@ -56,10 +56,7 @@ def list_new_issues(session, last_check, project_name, issue_types, max_results)
     last_check_formated = last_check.strftime("%Y-%m-%d %H:%M")
     query = 'Project = "{product_name}" AND '.format(product_name=project_name) + \
             'type IN {issue_type} AND '.format(issue_type=issue_types) + \
-            '((created >= "{last_check}") '.format(last_check=last_check_formated) + \
-            'OR ' + \
-            '(updated >= "{last_check}" '.format(last_check=last_check_formated) + \
-            'AND status = "Closed"))'
+            'created >= "{last_check}"'.format(last_check=last_check_formated)
     parameters = {'jql': query, 'maxResults': max_results}
     logging.debug("Looking for new issues with query %s.", query)
     response = session.get(SEARCH_URL, params=parameters)
