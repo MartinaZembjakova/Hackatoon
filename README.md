@@ -14,3 +14,5 @@ You will need to set at least all the variables in settings.py, that do not have
 2. CHAT_INVITE_URL is the entire url the Skype chat generates
 3. MAX_RESULTS needs to be high enough so that you don't get more cases than that in the time period.
 
+### Necessary preconditions
+You need to have the same time zone on Jira and on your device.
