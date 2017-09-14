@@ -4,11 +4,12 @@ This file contains main function for running the application itself.
 from datetime import datetime, timedelta
 import logging
 import threading
+import os.path
 
 from message_formatter import format_message
 from jira_service import initialise_session, list_new_issues, close_session, parse_issue
 from settings import SKYPE_USERNAME, SKYPE_PASSWORD, CHAT_INVITE_URL, PROJECT_NAME, TIMEOUT, ISSUE_TYPES, \
-    JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD, MAX_RESULTS, LOG_FILE
+    JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD, MAX_RESULTS, LOG_FILE, FILENAME_LASTCHECK
 from skype_service import send_message, open_chat, login
 
 
@@ -17,7 +18,7 @@ def main():
     logging.info("Initialising sessions and connections.")
     skype = login(SKYPE_USERNAME, SKYPE_PASSWORD)
     skype_chat = open_chat(skype, CHAT_INVITE_URL)
-    last_check = datetime.now() - timedelta(hours=4)
+    last_check = read_last_check()
     session = initialise_session(JIRA_SSL_CERTIFICATE, JIRA_USERNAME, JIRA_PASSWORD)
 
     # stopping flag
@@ -50,6 +51,7 @@ def repeat_checks(last_check, session, skype_chat, stop_event):
         new_last_check = datetime.now()
         do_check(last_check, session, skype_chat)
         last_check = new_last_check
+        write_last_check(last_check)
         stop_event.wait(TIMEOUT)
 
 
@@ -75,6 +77,22 @@ def user_input():
     message = ''
     while message != "bye":
         message = input('Type "bye" to exit... ')
+
+
+def read_last_check():
+    if not os.path.exists(FILENAME_LASTCHECK):
+        check = datetime.now() - timedelta(days=7)
+        write_last_check(check)
+
+    with open(FILENAME_LASTCHECK, "r") as file:
+        check = file.read()
+
+    return datetime.strptime(check, "%Y-%m-%d %H:%M")
+
+
+def write_last_check(last_check):
+    with open(FILENAME_LASTCHECK, "w") as file:
+        file.write(last_check.strftime("%Y-%m-%d %H:%M"))
 
 
 if __name__ == "__main__":

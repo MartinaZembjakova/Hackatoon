@@ -10,7 +10,7 @@ def bug(case, summary):
     return "(bug) " + case + " - " + summary + "\n" + BROWSE_URL + case
 
 
-def closed(case, summary):
+def story(case, summary):
     return "(movie) " + case + " - " + summary + "\n" + BROWSE_URL + case
 
 
@@ -19,8 +19,8 @@ def other_types(case, summary):
 
 
 def format_message(case, summary, issue_type, status):
-    if status == 'Closed':
-        return closed(case, summary)
+    if issue_type == "Story":
+        return story(case, summary)
     elif issue_type == "Bug":
         return bug(case, summary)
     else:
