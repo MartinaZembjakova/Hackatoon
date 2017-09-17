@@ -21,5 +21,4 @@ if JIRA_SSL_CERTIFICATE == "False":
 
 # Others settings
 TIMEOUT = int(os.environ.get("TIMEOUT", "300"))
-LOG_FILE = os.environ.get("LOG_FILE", "jira2skype.log")
 FILENAME_LASTCHECK = os.environ.get("FILENAME_LASTCHECK", "last_check.txt")

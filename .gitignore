@@ -9,5 +9,7 @@ __pycache__/*
 
 #log file
 jira2skype.log
+jira2skype.log.1
+jira2skype.log.2
 
 last_check.txt
